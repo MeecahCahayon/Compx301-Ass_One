@@ -5,24 +5,17 @@
 class TrieNode 
 { 
     // Alphabet size (# of symbols) 
-    private final int ALPHABET_SIZE = 26;
-    public TrieNode[] children = new TrieNode[ALPHABET_SIZE]; 
-    public boolean isEndOfWord;
-
+    //private final int ALPHABET_SIZE = 26;
+    private boolean isEndOfWord;
 
     //Creating private variables
     private int _phraseNum;
     private String _phraseChar;
-    
-    public TrieNode() { 
-        isEndOfWord = false; 
-        for (int i = 0; i < ALPHABET_SIZE; i++) {
-            children[i] = null; 
-        }
-    }
+    private TrieNode[] children = new TrieNode[]; 
 
     //Constructor
     public TrieNode(int phraseNum, String phraseChar) {
+        isEndOfWord = false;
         _phraseNum = phraseNum;
         _phraseChar = phraseChar;
     }
@@ -35,5 +28,9 @@ class TrieNode
 
     public int getPhraseNum() {
         return _phraseNum;
+    }
+
+    public void setChildren(TrieNode child) {
+        children.add(child);
     }
 }
