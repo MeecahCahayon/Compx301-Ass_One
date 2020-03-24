@@ -1,3 +1,7 @@
+/* Name: Meecah Cahayon + Eunice Llobet
+ * Student ID: 1259825 + 1330233
+ */
+
 import java.util.*;
 import java.io.*;
 
@@ -6,28 +10,35 @@ public class LZWencode {
     public static void main(String[] args) {
         
         //if there's 0 || >1 argument
-        if (args.length != 1) {
+        if (args.length != 2) {
             
             //print error
-            System.err.println("Enter valid argument: java LZWencode <textcode>");
+            System.err.println("Enter valid argument: java LZWencode <textcode> <textcode>");
             return;
         }
 
         try {
-            String filename = args[0];
-            //READ BYTES FROM FILE
-            InputStream fis = new FileInputStream(filename);
-            //DECODE BYTES INTO CHARACTERS
-            InputStreamReader isr = new InputStreamReader(fis);
-            //READ TEST FROM DECODED CHARACTER STREAM
-            BufferedReader br = new BufferedReader(isr); 
+            
+            //Initialise to read and write bytes from file
+            InputStream fis = new FileInputStream(args[0]);
+            OutputStream fos = new FileOutputStream(args[1]);
 
-            //FOR EVERY LINE, DO SOMETHING
-            String line = "";
-            while((line = br.readLine()) != null) {
-                //System.out.println(line);     //TEST IF SYSTEM WILL OUTPUT LINE FROM TEXT
+            //read first byte
+            int intInput = fis.read();
 
+            //if not the end of the stream
+            while (intInput != -1) {
+
+                //write
+                System.out.println("First output is :" + intInput);
+                fos.write(intInput);
+
+                //next byte
+                intInput = fis.read();
             }
+
+            fos.flush();
+            fos.close();
 
             LZWencode e = new LZWencode();
             //e.encode(input);
