@@ -2,18 +2,28 @@
  * Student ID: 1259825 + 1330233
  */
 
+import java.util.*;
+import java.io.*;
+
 class TrieNode 
 { 
-    // Alphabet size (# of symbols) 
-    //private final int ALPHABET_SIZE = 26;
-    private boolean isEndOfWord;
-
     //Creating private variables
+    private boolean isEndOfWord;
     private int _phraseNum;
     private String _phraseChar;
-    private TrieNode[] children = new TrieNode[]; 
+    //temporary public (for testing the output)
+    public ArrayList<TrieNode> children = new ArrayList<TrieNode>();
 
-    //Constructor
+    //Constructors
+    public TrieNode() {
+        isEndOfWord = false;
+    }
+
+    public TrieNode(int phraseNum) {
+        isEndOfWord = false;
+        _phraseNum = phraseNum;
+    }
+
     public TrieNode(int phraseNum, String phraseChar) {
         isEndOfWord = false;
         _phraseNum = phraseNum;
@@ -30,7 +40,7 @@ class TrieNode
         return _phraseNum;
     }
 
-    public void setChildren(TrieNode child) {
+    public void setChild(TrieNode child) {
         children.add(child);
     }
 }
