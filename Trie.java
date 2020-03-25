@@ -1,11 +1,23 @@
+/* Name: Meecah Cahayon + Eunice Llobet
+ * Student ID: 1259825 + 1330233
+ */
+
 // Java implementation of search and insert operations 
 // on Trie 
 public class Trie {
-    private TrieNode root;
+    
+    //creating private variables
+    public TrieNode _root;
 
+    //Constructor
     public Trie() {
-        root = new TrieNode();
 
+        _root = new TrieNode();
+
+        for (int rootPhraseNum = 1; rootPhraseNum < 257 ; rootPhraseNum++ ) {
+            
+            _root.setChild(new TrieNode(rootPhraseNum));
+        }
     }
 
     // If not present, inserts key into trie 
