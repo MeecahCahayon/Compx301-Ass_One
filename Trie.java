@@ -5,8 +5,9 @@
 // Java implementation of search and insert operations 
 // on Trie 
 public class Trie {
-    
+
     //creating private variables
+    //temporary public (for testing the output)
     public TrieNode _root;
 
     //Constructor
