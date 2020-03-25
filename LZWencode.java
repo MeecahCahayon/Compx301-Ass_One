@@ -26,10 +26,22 @@ public class LZWencode {
             //read first byte
             int intInput = fis.read();
 
+            //Creating a Trie
+            Trie trie = new Trie();
+
+            //testing if children works
+            for (int rootPhraseNum = 1; rootPhraseNum < trie._root.children.size() ; rootPhraseNum++ ) {
+            
+                System.out.println("Child " + trie._root.children.get(rootPhraseNum-1).getPhraseNum());
+            }
+
             //if not the end of the stream
             while (intInput != -1) {
 
-                //write
+                //Check if its on Trie
+
+                //write on the file second argument
+                //Testing if output works
                 System.out.println("First output is :" + intInput);
                 fos.write(intInput);
 
@@ -51,6 +63,12 @@ public class LZWencode {
             return;
         }
     }
+
+    /* NOTE */
+
+    // 1.) What is the difference between BufferedInputStream to InputStream? Which is better in this program?
+
+    /* END NOTE */
 
     //VARIABLES: TRIE, LIST OF INTEGERS
     //private Trie lzwTrie;
@@ -105,7 +123,10 @@ public class LZWencode {
         return output;
     }
 
-    //GET ALL POSSIBLE SYMBOLS FROM INPUT
+/**** I DONT THINK WE NEED THIS ANYMORE WILL EXPLAIN WHEN WE VID CHAT ***/
+
+
+/*    //GET ALL POSSIBLE SYMBOLS FROM INPUT
     public String uniqueChar(String input) {
     	String unique = "";
 
@@ -127,7 +148,7 @@ public class LZWencode {
     		}
     	}
     	return unique;
-    }
+    }*/
 
 
 }
