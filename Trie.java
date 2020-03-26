@@ -7,11 +7,10 @@ import java.io.*;
 
 class Trie {
 
-    //creating private variables
-    //temporary public (for testing the output)
-    public TrieNode _root;
+    //DECLARE VARIABLES
+    private TrieNode _root;
 
-    //Constructor
+    //CONSTRUCTOR
     public Trie() {
 
         _root = new TrieNode();
@@ -25,7 +24,8 @@ class Trie {
         }
     }
 
-    //Method to find char in trie
+    //FIND CHAR IN TRIE AND RETURN THE NODE IF FOUND
+    //IF NOT FOUND, RETURN NULL
     public TrieNode FindChar(TrieNode node, int intInput) {
 
         TrieNode curr = node;
@@ -36,8 +36,6 @@ class Trie {
                 return curr.getChildren().get(i);
             }
         }
-
-        //if not found
         return null;
     }
 

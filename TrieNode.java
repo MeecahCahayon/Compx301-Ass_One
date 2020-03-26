@@ -7,13 +7,13 @@ import java.io.*;
 
 class TrieNode {
 
-    //Creating private variables
+    //DECLARE VARIABLES
     private boolean isEndOfWord;
     private int _phraseNum;
     private char _phraseChar;
     private ArrayList<TrieNode> children = new ArrayList<TrieNode>(); 
 
-    //Constructors
+    //CONSTRUCTOR
     public TrieNode() {
         isEndOfWord = false;
     }
@@ -24,7 +24,7 @@ class TrieNode {
         _phraseChar = phraseChar;
     }
 
-    /*Getters and Setters*/
+    //GETTERS AND SETTERS
 
     public char getPhraseChar() {
         return _phraseChar;

@@ -1,65 +1,60 @@
 /* Name: Meecah Cahayon + Eunice Llobet
- * Student ID: 1259825 + 
+ * Student ID: 1259825 + 1330233
  */
 
 import java.util.*;
 import java.io.*;
 
-class MLZWencode {
+class LZWencode {
 
     public static void main(String[] args) {
         
-        //if there's 0 || >1 argument
+        //PASS IN A TEXT FILE FOR INPUT
         if (args.length != 1) {
             
-            //print error
+            //PRINT ERROR MESSAGE
             System.err.println("Enter valid argument: java LZWencode <Input text File>");
             return;
         }
 
         try {
             
-            //Initialise to read and write bytes from file
+            //READ AS STREAM OF BYTES FROM FILE
             InputStream fis = new FileInputStream(args[0]);
-            //OutputStream fos = new FileOutputStream(args[1]);
 
-            //variables
+            //DECLARE VARIABLES
             Trie myTrie = new Trie();
             TrieNode parentNode, currNode;
+            //NUMBER OF EXPECTED SYMBOLS
             int phraseNum = 257;
             
-            //read first byte
+            //READ FIRST BYTE
             int intInput = fis.read();
             int tempInput = intInput;
             parentNode = myTrie.getTrieRoot();
 
-            //if not the end of the stream
+            //IF NOT THE END OF STREAM
             while (intInput != -1) {
 
+            	//GET NODE WHERE INPUT MATCHES A NODE
                 currNode = myTrie.FindChar(myTrie.getTrieRoot(), intInput);
 
-                //Check if its on Trie
+                //CHECK IF CURRENT NODE IS IN TRIE
                 while (currNode != null) {
 
                     parentNode = currNode;
 
-                    //Testing if output works
-                    //System.out.println("Byte " + intInput + " found. Char is " + currNode.getPhraseChar());
-
-                    //next byte and node
+                    //READ NEXT BYTE AND SET NEXT NODE
                     intInput = fis.read();
                     tempInput = intInput;
                     currNode = myTrie.FindChar(currNode, intInput);
                 }
                     
-                //add char to trie
+                //ADD CHARACTER TO TRIE
                 parentNode.setChild(new TrieNode(phraseNum, (char)intInput));
                 phraseNum++;
                 
-                //write on the file second argument
-                //fos.writeInt(parentNode.getPhraseNum());
-                //Testing if output works
-                //System.out.println("Byte " + intInput + " is not found. phraseNum is " + parentNode.getPhraseNum());
+                //OUTPUT PHRASE NUMBERS
                 System.out.println(parentNode.getPhraseNum());
 
                 intInput = tempInput;
@@ -68,15 +63,9 @@ class MLZWencode {
         }
         catch(Exception eEncode) {
 
-            //print error
+            //PRINT ERROR
             System.err.println("Error: " + eEncode);
             return;
         }
     }
 }
-
-/* NOTE */
-
-// 1.) What is the difference between BufferedInputStream to InputStream? Which is better in this program?
-
-/* END NOTE */
