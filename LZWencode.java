@@ -30,9 +30,9 @@ public class LZWencode {
             Trie trie = new Trie();
 
             //testing if children works
-            for (int rootPhraseNum = 1; rootPhraseNum < trie._root.children.size() ; rootPhraseNum++ ) {
+            for (int rootPhraseNum = 0; rootPhraseNum < trie._root.children.size() ; rootPhraseNum++ ) {
             
-                System.out.println("Child " + trie._root.children.get(rootPhraseNum-1).getPhraseNum());
+                System.out.println("Child " + trie._root.children.get(rootPhraseNum).getPhraseNum());
             }
 
             //if not the end of the stream
@@ -52,7 +52,7 @@ public class LZWencode {
             fos.flush();
             fos.close();
 
-            LZWencode e = new LZWencode();
+            //LZWencode e = new LZWencode();
             //e.encode(input);
 
         }
@@ -70,7 +70,9 @@ public class LZWencode {
 
     /* END NOTE */
 
-    //VARIABLES: TRIE, LIST OF INTEGERS
+    /**** WE MIGHT NEED TO MOVE THIS TO MAIN ***/
+
+    /*//VARIABLES: TRIE, LIST OF INTEGERS
     //private Trie lzwTrie;
     private Trie dictionary;
     private Trie key;
@@ -122,6 +124,7 @@ public class LZWencode {
 
         return output;
     }
+*/
 
 /**** I DONT THINK WE NEED THIS ANYMORE WILL EXPLAIN WHEN WE VID CHAT ***/
 
@@ -148,7 +151,8 @@ public class LZWencode {
     		}
     	}
     	return unique;
-    }*/
+    }
+*/
 
 
 }
