@@ -21,6 +21,8 @@ public class Trie {
         }
     }
 
+    /**** WE MIGHT NEED TO FIX SOME OF THE CODE BECAUSE OF THE CHANGE TO ARRAYLIST ***/
+/*
     // If not present, inserts key into trie 
     // If the key is prefix of trie node,  
     // just marks leaf node 
@@ -70,5 +72,5 @@ public class Trie {
        
         return (node != null && node.isEndOfWord); 
     }
-
+*/
 }
