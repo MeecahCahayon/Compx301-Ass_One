@@ -5,26 +5,20 @@
 import java.util.*;
 import java.io.*;
 
-class TrieNode 
-{ 
+class TrieNode {
+
     //Creating private variables
     private boolean isEndOfWord;
     private int _phraseNum;
-    private String _phraseChar;
-    //temporary public (for testing the output)
-    public ArrayList<TrieNode> children = new ArrayList<TrieNode>();
+    private char _phraseChar;
+    private ArrayList<TrieNode> children = new ArrayList<TrieNode>(); 
 
     //Constructors
     public TrieNode() {
         isEndOfWord = false;
     }
 
-    public TrieNode(int phraseNum) {
-        isEndOfWord = false;
-        _phraseNum = phraseNum;
-    }
-
-    public TrieNode(int phraseNum, String phraseChar) {
+    public TrieNode(int phraseNum, char phraseChar) {
         isEndOfWord = false;
         _phraseNum = phraseNum;
         _phraseChar = phraseChar;
@@ -32,12 +26,20 @@ class TrieNode
 
     /*Getters and Setters*/
 
-    public String getPhraseChar() {
+    public char getPhraseChar() {
         return _phraseChar;
     }
 
     public int getPhraseNum() {
         return _phraseNum;
+    }
+
+    public boolean isEndOfWord() {
+        return isEndOfWord;
+    }
+
+    public ArrayList<TrieNode> getChildren() {
+        return children;
     }
 
     public void setChild(TrieNode child) {
