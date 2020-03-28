@@ -1,23 +1,39 @@
+/* Name: Meecah Cahayon + Eunice Llobet
+ * Student ID: 1259825 + 1330233
+ */
+
 import java.util.*;
 import java.io.*;
 
 class Library {
-	LibNode root;
 
+	//creating private variables
+	//temporary public will need to change to private
+	public LibNode root;
+
+	//constructor
 	public Library() {
 
 		root = new LibNode(1);
 		LibNode parent = root;
 		LibNode curr = root;
 
-		for(int i = 1; i < 256; i++) {
+		for(int phraseNum = 0; phraseNum < 256; phraseNum++) {
 
-			curr = new LibNode(i+1);
+			//create phrase number
+			curr = new LibNode(phraseNum+1);
+
+			//set character to specific phrasenumber
+			char mmc = (char)phraseNum;
+			curr.setMmc(mmc);
+
+			//link parent to curr then next
 			parent.setNext(curr);
 			parent = curr;
 		}
 	}
 
+	//add node at the end of the library list
 	public void addNode(int phraseNum) {
 
 		LibNode curr = root;
