@@ -8,15 +8,14 @@ import java.io.*;
 class Library {
 
 	//creating private variables
-	//temporary public will need to change to private
-	public LibNode root;
+	private LibNode _root;
 
 	//constructor
 	public Library() {
 
-		root = new LibNode(1);
-		LibNode parent = root;
-		LibNode curr = root;
+		_root = new LibNode(1);
+		LibNode parent = _root;
+		LibNode curr = _root;
 
 		for(int phraseNum = 0; phraseNum < 256; phraseNum++) {
 
@@ -36,7 +35,7 @@ class Library {
 	//add node at the end of the library list
 	public void addNode(int phraseNum) {
 
-		LibNode curr = root;
+		LibNode curr = _root;
 
 		//WHILE NOT AT THE END OF LIST
 		while(curr.getNext() != null) {
@@ -44,5 +43,23 @@ class Library {
 		}
 
 		curr.setNext(new LibNode(phraseNum));
+	}
+
+	public LibNode findPhraseNumber(int phrasenumber) {
+
+		LibNode curr = _root;
+
+		//find phrase number in library
+    	while(phrasenumber != curr.getPhraseNum()) {
+
+    		//go next
+    		curr = curr.getNext();
+    	}
+
+    	return curr;
+	}
+
+	public LibNode getLibraryRoot() {
+		return _root;
 	}
 }
