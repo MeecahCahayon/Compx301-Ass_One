@@ -20,82 +20,85 @@ class LZWdecode {
         try {
 
             //READ AS STREAM OF BYTES FROM FILE
-            InputStream fis = new FileInputStream(args[0]);
-
-            //READ FIRST BYTE
-            int intEncoderOutput = fis.read();
+            InputStream file = new FileInputStream(args[0]);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
 
             //DECLARE VARIABLES
             Library myLibrary = new Library();
+            LibNode parentNode, currNode, inputNode;
+            Stack<Character> charStack = new Stack<Character>();
             int phraseNum = 257;
-            LibNode head = myLibrary.root;
-            Stack<String> stack = new Stack<String>();
+            int currIN;
+            char mmc = '\0';
 
-            //test if library has 256 items and its char
-            while (head.getNext() != null) {
+            //reads a line
+            String line = reader.readLine();
+            parentNode = myLibrary.getLibraryRoot();
 
-                System.out.println("Phrase Number: " + head.getPhraseNum() + ". Char " + head.getMmc());
-                head = head.getNext();
-            }
-            //output last node of the list
-            if (head.getNext() == null) {
-                
-                System.out.println("Phrase Number: " + head.getPhraseNum() + ". Char " + head.getMmc());
-            }
+            //WHILE NOT END OF FILE
+            while(line != null) {
 
-            //IF NOT THE END OF STREAM
-            while (intEncoderOutput != -1) {
-      		
-                System.out.println((char)intEncoderOutput);
+                //convert line to int
+                int inputNum = Integer.parseInt(line);
 
-                //CHANGES START
-                //ADD TO THE LIBRARY A NEW PHRASE NUMBER
+                //find phrase number in library
+                inputNode = myLibrary.findPhraseNumber(inputNum);
+
+                currIN = inputNode.getInputNum();
+
+                //check if phrasenumber has inputNum
+                while (currIN != 0) {
+
+                    //go to that phrase number in library
+                    currNode = myLibrary.findPhraseNumber(currIN);
+
+                    mmc = currNode.getMmc();
+                    charStack.push(mmc);
+
+                    currIN = currNode.getInputNum();
+                }
+
+                //ADD NEW PHRASE TO THE LIBRARY
                 myLibrary.addNode(phraseNum);
 
-                char mmc = '\0';
+                //add inputNum to that phraseNumber
+                currNode = myLibrary.findPhraseNumber(phraseNum);
+                currNode.setInputNum(inputNum);
 
-                //FIND PHRASE NUMBER TO MATCH ENCODE OUTPUT
-                while(intEncoderOutput > 256) {
+                if (phraseNum > 257) {
+                    
+                    if (!charStack.empty()) {
+                        
+                        parentNode.setMmc(charStack.peek());
 
-                	if(!(intEncoderOutput == head.getInputNum())) {
-                		head = head.getNext();
-                	}
-                	//GET CHARACTER
-                	mmc = head.getMmc();
-                	//STORE IN STACK
-                	stack.push("" + mmc);
+                    }
+                    else {
+
+                        //get the input number where input number matches phrase number
+                        parentNode.setMmc(inputNode.getMmc());
+                    }
                 }
 
-                //MATCH THE PHRASE NUMBER WITH CHARACTER
-                if(stack.empty() != false) {
-                	//MATCH PHRASE NUMBER WITH THIS CHARACTER
-                	head.setMmc(stack.pop().charAt(1));
+                //while there's something in the stack
+                while(!charStack.empty()) {
+
+                    //pop then print output
+                    //System.out.println("Hi");
+                    System.out.print(charStack.pop());
                 }
-                else {
-                	head.setMmc(mmc);	//FINISH CHANGES
-                }
 
-                intEncoderOutput = fis.read();
+                //output inputNode mmc
+                System.out.print(inputNode.getMmc());
+
+                //save this phraseNum for putting mmc later
+                parentNode = currNode;
+
+                //add one to lib phraseNumber
+                phraseNum++;
+
+                //next line
+                line = reader.readLine();
             }
-
-            //testing addNode
-            myLibrary.addNode(phraseNum);
-            phraseNum++;
-
-            head = myLibrary.root;
-
-            //test if library has 256 items and its char
-            while (head.getNext() != null) {
-
-                System.out.println("Phrase Number: " + head.getPhraseNum() + ". Char " + head.getMmc());
-                head = head.getNext();
-            }
-            //test if the new added lib node is added
-            if (head.getNext() == null) {
-                
-                System.out.println("Phrase Number: " + head.getPhraseNum() + ".");
-            }
-
         }
         catch (Exception eDecode) {
 
