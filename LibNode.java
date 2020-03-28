@@ -4,7 +4,7 @@ import java.io.*;
 class LibNode {
 	//DECLARE VARIABLES
 	private int _phraseNum;
-	private int _inputNum;
+	private int _inputNum = 0;
 	private char _mmc;
 	private LibNode _next;
 
