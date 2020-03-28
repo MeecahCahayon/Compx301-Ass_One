@@ -28,11 +28,8 @@ class LZWdecode {
             //DECLARE VARIABLES
             Library myLibrary = new Library();
             int phraseNum = 257;
-
-
-
-
             LibNode head = myLibrary.root;
+            Stack<String> stack = new Stack<String>();
 
             //test if library has 256 items and its char
             while (head.getNext() != null) {
@@ -46,20 +43,40 @@ class LZWdecode {
                 System.out.println("Phrase Number: " + head.getPhraseNum() + ". Char " + head.getMmc());
             }
 
-
-
-
-
             //IF NOT THE END OF STREAM
             while (intEncoderOutput != -1) {
-                
+      		
                 System.out.println((char)intEncoderOutput);
+
+                //CHANGES START
+                //ADD TO THE LIBRARY A NEW PHRASE NUMBER
+                myLibrary.addNode(phraseNum);
+
+                char mmc = '\0';
+
+                //FIND PHRASE NUMBER TO MATCH ENCODE OUTPUT
+                while(intEncoderOutput > 256) {
+
+                	if(!(intEncoderOutput == head.getInputNum())) {
+                		head = head.getNext();
+                	}
+                	//GET CHARACTER
+                	mmc = head.getMmc();
+                	//STORE IN STACK
+                	stack.push("" + mmc);
+                }
+
+                //MATCH THE PHRASE NUMBER WITH CHARACTER
+                if(stack.empty() != false) {
+                	//MATCH PHRASE NUMBER WITH THIS CHARACTER
+                	head.setMmc(stack.pop().charAt(1));
+                }
+                else {
+                	head.setMmc(mmc);	//FINISH CHANGES
+                }
+
                 intEncoderOutput = fis.read();
             }
-
-
-
-
 
             //testing addNode
             myLibrary.addNode(phraseNum);
