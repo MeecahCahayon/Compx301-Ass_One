@@ -20,7 +20,7 @@ class Library {
 		for(int phraseNum = 0; phraseNum < 256; phraseNum++) {
 
 			//create phrase number
-			curr = new LibNode(phraseNum+1);
+			curr = new LibNode(phraseNum);
 
 			//set character to specific phrasenumber
 			char mmc = (char)phraseNum;

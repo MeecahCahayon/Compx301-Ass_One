@@ -26,7 +26,7 @@ class LZWencode {
             Trie myTrie = new Trie();
             TrieNode parentNode, currNode;
             //NUMBER OF EXPECTED SYMBOLS
-            int phraseNum = 257;
+            int phraseNum = 256;
             
             //READ FIRST BYTE
             int intInput = fis.read();

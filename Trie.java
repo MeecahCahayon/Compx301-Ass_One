@@ -20,7 +20,7 @@ class Trie {
             
             //CHANGE INT INTO ASCII CHARACTER THEN ADD CHILDREN
             char rootPhraseChar = (char)rootPhraseNum;
-            _root.setChild(new TrieNode(rootPhraseNum + 1, rootPhraseChar));
+            _root.setChild(new TrieNode(rootPhraseNum, rootPhraseChar));
         }
     }
 

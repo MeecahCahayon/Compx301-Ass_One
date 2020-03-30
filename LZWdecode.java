@@ -27,7 +27,7 @@ class LZWdecode {
             Library myLibrary = new Library();
             LibNode parentNode, currNode, inputNode;
             Stack<Character> charStack = new Stack<Character>();
-            int phraseNum = 257;
+            int phraseNum = 256;
             int currIN;
             char mmc = '\0';
 
@@ -65,7 +65,7 @@ class LZWdecode {
                 currNode = myLibrary.findPhraseNumber(phraseNum);
                 currNode.setInputNum(inputNum);
 
-                if (phraseNum > 257) {
+                if (phraseNum > 256) {
                     
                     if (!charStack.empty()) {
                         
