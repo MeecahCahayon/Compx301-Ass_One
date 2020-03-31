@@ -13,7 +13,7 @@ class LZWpacker {
         if (args.length != 1) {
             
             //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWdecode <LZWencode output file>");
+            System.err.println("Enter valid argument: java LZWpacker <LZWencode output file>");
             return;
         }
 
@@ -26,32 +26,14 @@ class LZWpacker {
             //DECLARE VARIABLES
             int maxPhraseNum = 256;
             int maxBit = 32;
-            int bitCount = (int)(Math.log(maxPhraseNum) / Math.log(2));
-            String strMask;
-            int intMask;
-            int prevBitCount;
-
+            int maskOutput = 0xff000000;
+            int packer = 0;
+            int trackerCount = 0;
+            int output = 0;
+            int bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
+			            
             //READS A LINE
             String line = reader.readLine();
-            if (line != null) {
-
-            	//CONVERTS LINE INTO INT
-                int inputNum = Integer.parseInt(line);
-
-                //shit phrase number by (maxBit-bitCount) to the left
-            	int packer = inputNum << (maxBit-bitCount);
-            	prevBitCount = bitCount;
-
-            	//mask the packer according to bitCount
-            	strMask = getMask(bitCount);
-            	intMask = Integer.parseInt(strMask,2);
-            	intMask = intMask << 1;
-            	packer = packer & intMask;
-
-            	System.out.println("String Mask: " + strMask);
-            	System.out.println("Int Mask: " + intMask);
-            	maxPhraseNum++;
-            }
 
             //WHILE NOT END OF THE FILE
             while (line != null) {
@@ -59,13 +41,54 @@ class LZWpacker {
             	//CONVERTS LINE INTO INT
             	int inputNum = Integer.parseInt(line);
 
-            	//testing
-            	System.out.println(inputNum);
+            	//Get new bitCount
+            	bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
+
+            	//shift phrase number by (maxBit - trackerCount - bitCount) to the left
+            	int newPhraseNum = inputNum << (maxBit - trackerCount - bitCount);
+
+            	//add new phrase number to packer
+            	packer = packer | newPhraseNum;
+
+            	//
+            	trackerCount += bitCount;
+
+            	//mask the packer according to trackerCount and bitCount
+            	packer = doMasking((trackerCount + bitCount), packer);
+            	maxPhraseNum++;
+        
+            	//while there's 8 or more bits
+            	while (trackerCount > 7) {
+
+            		//shift the packer by 8 to the left and outpit it
+            		output = packer & maskOutput;
+            		output = output >>> 24;
+            		byte outputByte = (byte)output;
+            		packer = packer << 8;
+            		trackerCount -= 8;
+
+            		System.out.write(outputByte);
+            	}
 
             	//NEXT LINE
                 line = reader.readLine();
             }
 
+            if (trackerCount != 0) {
+            	
+            	//shift the packer by 8 to the left and outpit it
+        		output = packer & maskOutput;
+
+        		// System.out.println("byte 1 " + output);
+        		output = output >>> 24;
+        		byte outputByte = (byte)output;
+        		packer = packer << 8;
+
+        		System.out.write(outputByte);
+            }
+
+            System.out.flush();
+            reader.close();
         }
         catch (Exception ePacker) {
 
@@ -75,23 +98,28 @@ class LZWpacker {
         }
 	}
 
-	static String getMask(int bitCount) {
+	static int doMasking(int bitCount, int packer) {
 
-		String mask = "";
+		String strMask = "0";
+		int intMask;
 		int count = 0;
 
-		for (int i = 0; i < bitCount ; i++ ) {
+		for (int i = 0; i < bitCount; i++ ) {
 			
-			mask += "1";
+			strMask += "1";
 			count++;
 		}
 	
 		while (count < 31) {
 			
-			mask += "0";
+			strMask += "0";
 			count++;
 		}
 
-		return mask;
+    	intMask = Integer.parseInt(strMask,2);
+    	intMask = intMask << 1;
+    	packer = packer & intMask;
+
+		return packer;
 	}
 }
