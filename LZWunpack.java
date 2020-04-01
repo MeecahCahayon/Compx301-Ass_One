@@ -63,7 +63,7 @@ class LZWunpack {
 
     	intMask = Integer.parseInt(strMask,2);
     	intMask = intMask << 1;
-    	packer = unpacker & intMask;
+    	unpacker = unpacker & intMask;
 
 		return unpacker;
 	}
