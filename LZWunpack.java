@@ -18,15 +18,17 @@ class LZWunpack {
         }
 
         try {
+            final int MAX_BIT = 32;
+
             //VARIABLES 
             int maxPhraseNum = 256;
-            int bitTracker = 8;
+            int bitTracker = 0;
             //KEEPS TRACK OF HOW MANY BITS A PHRASE NUMBER NEEDs
             int bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
             int prevBitCount = bitCount;
 
-            int output;
-            int unpacker;
+            int output = 0;
+            int unpacker = 0;
             
         	//READ AS STREAM OF BYTES FROM FILE
             InputStream file = new FileInputStream(args[0]);
@@ -35,8 +37,14 @@ class LZWunpack {
             
             while(inputByte != -1) 
             {
+                bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
+                System.out.println("Bit count: " + bitCount);
+
                 //BRING INPUT TO THE FRONT OF THE 32 BITS
-                unpacker = inputByte << 24;
+                int newByte = inputByte << (MAX_BIT - bitTracker -  prevBitCount);   //(MAX_BIT - bitTracker - bitCount);
+                
+                //ADD NEW BYTE TO UNPACKER
+                unpacker = unpacker | newByte;
                 
                 //TRACK AMOUNT OF BITS IN
                 bitTracker += 8;
@@ -45,19 +53,20 @@ class LZWunpack {
                 unpacker = doMasking(bitCount, unpacker);
 
                 //IF THE BIT TRACKER IS GREATER THAN OR EQUALS TO BITCOUNT THEN OUTPUT
-                if(bitTracker >= prevBitCount) 
+                if(bitTracker >= bitCount) 
                 {
                     //do masking (masking depends on how many prevBitcount)
-                    output = doMasking(prevBitCount, unpacker);
+                    output = doMasking(bitCount, unpacker);
 
-                    //SHIFT TO THE RIGHT BY 32 - PREVBITCOUNT
-                    output = output >>> (32 - prevBitCount);
-                    //OUTPUT THE OUTPUT       
+                    //SHIFT TO THE RIGHT BY 32 - 9 = 23
+                    output = output >>> (MAX_BIT - bitCount);
+                    //OUTPUT THE OUTPUT
                     System.out.println(output);
 
-                    unpacker <<= prevBitCount;
-                    bitTracker -= prevBitCount; //THIS IS RIGHT
+                    unpacker >>= bitCount;
+                    bitTracker -= prevBitCount;
                 }
+                
                 prevBitCount = bitCount;
                 maxPhraseNum++;
 
