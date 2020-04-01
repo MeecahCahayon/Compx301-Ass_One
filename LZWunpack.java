@@ -20,18 +20,50 @@ class LZWunpack {
         try {
             //VARIABLES 
             int maxPhraseNum = 256;
-            int bitTracker;
+            int bitTracker = 8;
+            //KEEPS TRACK OF HOW MANY BITS A PHRASE NUMBER NEEDs
+            int bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
+            int prevBitCount = bitCount;
+
             int output;
             int unpacker;
-            int bitCount;
-
+            
         	//READ AS STREAM OF BYTES FROM FILE
             InputStream file = new FileInputStream(args[0]);
             //READ BYTE
             int inputByte = file.read();
-            bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
-
             
+            while(inputByte != -1) 
+            {
+                //BRING INPUT TO THE FRONT OF THE 32 BITS
+                unpacker = inputByte << 24;
+                
+                //TRACK AMOUNT OF BITS IN
+                bitTracker += 8;
+
+                //MASKING
+                unpacker = doMasking(bitCount, unpacker);
+
+                //IF THE BIT TRACKER IS GREATER THAN OR EQUALS TO BITCOUNT THEN OUTPUT
+                if(bitTracker >= prevBitCount) 
+                {
+                    //do masking (masking depends on how many prevBitcount)
+                    output = doMasking(prevBitCount, unpacker);
+
+                    //SHIFT TO THE RIGHT BY 32 - PREVBITCOUNT
+                    output = output >>> (32 - prevBitCount);
+                    //OUTPUT THE OUTPUT       
+                    System.out.println(output);
+
+                    unpacker <<= prevBitCount;
+                    bitTracker -= prevBitCount; //THIS IS RIGHT
+                }
+                prevBitCount = bitCount;
+                maxPhraseNum++;
+
+                //READ NEXT BYTE
+                inputByte = file.read();
+            }
 
         }
 
