@@ -43,7 +43,7 @@ class LZWunpack {
         }
 	}
 
-	static int doMasking(int bitCount, int packer) 
+	static int doMasking(int bitCount, int unpacker) 
     {
 		String strMask = "0";
 		int intMask;
@@ -63,8 +63,8 @@ class LZWunpack {
 
     	intMask = Integer.parseInt(strMask,2);
     	intMask = intMask << 1;
-    	packer = packer & intMask;
+    	packer = unpacker & intMask;
 
-		return packer;
+		return unpacker;
 	}
 }
