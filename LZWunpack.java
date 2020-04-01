@@ -8,104 +8,140 @@ import java.io.*;
 class LZWunpack {
 	
 	public static void main(String[] args) {
-		
-		//PASS IN A TEXT FILE FOR INPUT
+        
+        //PASS IN A TEXT FILE FOR INPUT
         if (args.length != 1) {
             
             //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWunpack <LZWunpack output file>");
+            System.err.println("Enter valid argument: java LZWunpack <LZWpacker output file>");
             return;
         }
 
         try {
-            final int MAX_BIT = 32;
 
-            //VARIABLES 
+            //READ AS STREAM OF BYTES FROM FILE
+            InputStream file = new FileInputStream(args[0]);
+
+            //declaring final variables
+            final int MAX_BIT = 32;
+            final int INPPUT_BIT = 8;
+
+            //DECLARE VARIABLES 
             int maxPhraseNum = 256;
             int bitTracker = 0;
-            //KEEPS TRACK OF HOW MANY BITS A PHRASE NUMBER NEEDs
+            int unpacker = 0;
+            int output = 0;
             int bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
             int prevBitCount = bitCount;
 
-            int output = 0;
-            int unpacker = 0;
-            
-        	//READ AS STREAM OF BYTES FROM FILE
-            InputStream file = new FileInputStream(args[0]);
-            //READ BYTE
+            //READ FIRST BYTE
             int inputByte = file.read();
-            
-            while(inputByte != -1) 
-            {
+
+            //IF NOT THE END OF STREAM
+            while (inputByte != -1) {
+                
+                //Get new bitCount
                 bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
-                System.out.println("Bit count: " + bitCount);
 
-                //BRING INPUT TO THE FRONT OF THE 32 BITS
-                int newByte = inputByte << (MAX_BIT - bitTracker -  prevBitCount);   //(MAX_BIT - bitTracker - bitCount);
-                
-                //ADD NEW BYTE TO UNPACKER
+                //shift phrase number by (MAX_BIT - trackerCount - inputBit(8)) to the left
+                int newByte = inputByte << (MAX_BIT - bitTracker - INPPUT_BIT);
+
+                // System.out.println("maxBit: " + MAX_BIT);
+                // System.out.println("bitTracker: " + bitTracker);
+                // System.out.println("bitCount: " + bitCount);
+
+                //add new phrase number to packer
                 unpacker = unpacker | newByte;
-                
-                //TRACK AMOUNT OF BITS IN
-                bitTracker += 8;
 
-                //MASKING
-                unpacker = doMasking(bitCount, unpacker);
+                bitTracker += INPPUT_BIT;
+                // System.out.println("newByte: " + newByte);
+                // System.out.println("unpacker: " + unpacker);
+                // System.out.println("new bitTracker: " + bitTracker);
 
-                //IF THE BIT TRACKER IS GREATER THAN OR EQUALS TO BITCOUNT THEN OUTPUT
-                if(bitTracker >= bitCount) 
-                {
-                    //do masking (masking depends on how many prevBitcount)
-                    output = doMasking(bitCount, unpacker);
-
-                    //SHIFT TO THE RIGHT BY 32 - 9 = 23
-                    output = output >>> (MAX_BIT - bitCount);
-                    //OUTPUT THE OUTPUT
-                    System.out.println(output);
-
-                    unpacker >>= bitCount;
-                    bitTracker -= prevBitCount;
-                }
-                
-                prevBitCount = bitCount;
+                //mask the packer according to trackerCount and bitCount
+                unpacker = doMasking(bitTracker, unpacker);
                 maxPhraseNum++;
 
-                //READ NEXT BYTE
+                if (bitTracker >= prevBitCount) {
+                    
+                    // System.out.println("YES");
+                    output = doMasking(prevBitCount, unpacker);
+                    // System.out.println("output w/o shift: " + output);
+                    output = output >>> (MAX_BIT - prevBitCount);
+
+                    unpacker = unpacker << prevBitCount;
+                    bitTracker -= prevBitCount;
+
+                    // System.out.println("inputByte: " + inputByte);
+                    // System.out.println("OUTPUT: " + output);
+                    // System.out.println("new bitTracker: " + bitTracker);
+                    // System.out.println("");
+
+                    System.out.println(output);
+                }
+                else {
+
+                    // System.out.println("NO");
+                    // System.out.println("");
+                }
+                
+
                 inputByte = file.read();
+            }
+
+            while (bitTracker >= 0) {
+                
+                //Get new bitCount
+                bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
+
+                // System.out.println("LAST");
+                output = doMasking(bitCount, unpacker);
+                // System.out.println("output w/o shift: " + output);
+                output = output >>> (MAX_BIT - bitCount);
+
+                unpacker = unpacker << bitCount;
+                bitTracker -= bitCount;
+
+                // System.out.println("inputByte: " + inputByte);
+                // System.out.println("OUTPUT: " + output);
+                // System.out.println("new bitTracker: " + bitTracker);
+                // System.out.println("");
+
+                System.out.println(output);
             }
 
         }
 
         catch (Exception eUnpacker) 
         {
-        	//PRINT ERROR
+            //PRINT ERROR
             System.err.println("Error: " + eUnpacker);
             return;
         }
-	}
+    }
 
-	static int doMasking(int bitCount, int unpacker) 
+    static int doMasking(int bitCount, int unpacker) 
     {
-		String strMask = "0";
-		int intMask;
-		int count = 0;
+        String strMask = "";
+        int intMask;
+        int count = 0;
 
-		for (int i = 0; i < bitCount; i++ ) {
-			
-			strMask += "1";
-			count++;
-		}
-	
-		while (count < 31) {
-			
-			strMask += "0";
-			count++;
-		}
+        for (int i = 0; i < bitCount; i++ ) {
+            
+            strMask += "1";
+            count++;
+        }
+    
+        while (count < 31) {
+            
+            strMask += "0";
+            count++;
+        }
 
-    	intMask = Integer.parseInt(strMask,2);
-    	intMask = intMask << 1;
-    	unpacker = unpacker & intMask;
+        intMask = Integer.parseInt(strMask,2);
+        intMask = intMask << 1;
+        unpacker = unpacker & intMask;
 
-		return unpacker;
-	}
+        return unpacker;
+    }
 }
