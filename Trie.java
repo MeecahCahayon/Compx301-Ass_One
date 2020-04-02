@@ -40,6 +40,7 @@ class Trie {
     }
 
     public TrieNode getTrieRoot() {
+        
         return _root;
     }
 }

@@ -36,7 +36,7 @@ class LZWencode {
             //IF NOT THE END OF STREAM
             while (intInput != -1) {
 
-            	//GET NODE WHERE INPUT MATCHES A NODE
+                //GET NODE WHERE INPUT MATCHES A NODE
                 currNode = myTrie.FindChar(myTrie.getTrieRoot(), intInput);
 
                 //CHECK IF CURRENT NODE IS IN TRIE

@@ -7,49 +7,53 @@ import java.io.*;
 
 class Library {
 
-	//creating private variables
+	//DECLARE VARIABLES
 	private LibNode _root;
 
-	//constructor
+	//CONSTRUCTOR
 	public Library() {
 
+		//CREATE THE ROOT
 		_root = new LibNode(1);
 		LibNode parent = _root;
 		LibNode curr = _root;
 
+		//CREATING ALL POSSIBLE CHARACTERS (ASCII)
 		for(int phraseNum = 0; phraseNum < 256; phraseNum++) {
 
-			//create phrase number
+			//CREATE A PHRASENUMBER
 			curr = new LibNode(phraseNum);
 
-			//set character to specific phrasenumber
+			//SET ITS CHAR
 			char mmc = (char)phraseNum;
 			curr.setMmc(mmc);
 
-			//link parent to curr then next
+			//SET NEXT NODE
 			parent.setNext(curr);
 			parent = curr;
 		}
 	}
 
-	//add node at the end of the library list
+	//ADD NODE AT THE END OF THE LIBRARY LIST
 	public void addNode(int phraseNum) {
 
 		LibNode curr = _root;
 
 		//WHILE NOT AT THE END OF LIST
 		while(curr.getNext() != null) {
+
 			curr = curr.getNext();
 		}
 
 		curr.setNext(new LibNode(phraseNum));
 	}
 
+	//FIND PHRASE NUMBER IN LIBRARY
 	public LibNode findPhraseNumber(int phrasenumber) {
 
 		LibNode curr = _root;
 
-		//find phrase number in library
+		//IF NOT SAME PHRASE NUMBER
     	while(phrasenumber != curr.getPhraseNum()) {
 
     		//go next
@@ -60,6 +64,7 @@ class Library {
 	}
 
 	public LibNode getLibraryRoot() {
+		
 		return _root;
 	}
 }

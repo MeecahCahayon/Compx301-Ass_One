@@ -31,27 +31,28 @@ class LZWdecode {
             int currIN;
             char mmc = '\0';
 
-            //reads a line
+            //READS LINE
             String line = reader.readLine();
             parentNode = myLibrary.getLibraryRoot();
 
             //WHILE NOT END OF FILE
             while(line != null) {
 
-                //convert line to int
+                //CONVERT LINE TO INT
                 int inputNum = Integer.parseInt(line);
 
-                //find phrase number in library
+                //FIND PHRASE NUMBER IN THE LIBRARY
                 inputNode = myLibrary.findPhraseNumber(inputNum);
 
                 currIN = inputNode.getInputNum();
 
-                //check if phrasenumber has inputNum
+                //IF PHRASE NUMBER HAS INPUTNUM
                 while (currIN != 0) {
 
-                    //go to that phrase number in library
+                    //GO TO THAT PHRASE NUMBER IN LIBRARY
                     currNode = myLibrary.findPhraseNumber(currIN);
 
+                    //GET MISMATCH CHAR AND PUSH TO STACK
                     mmc = currNode.getMmc();
                     charStack.push(mmc);
 
@@ -61,42 +62,42 @@ class LZWdecode {
                 //ADD NEW PHRASE TO THE LIBRARY
                 myLibrary.addNode(phraseNum);
 
-                //add inputNum to that phraseNumber
+                //ADD INPUTNUM TO THAT PHRASE NUMBER
                 currNode = myLibrary.findPhraseNumber(phraseNum);
                 currNode.setInputNum(inputNum);
 
+                //FOR EVERY PHRASE NUMBER BIGGER THAN PHRASE NUMBER + 1 SET MISMATCH CHAR
                 if (phraseNum > 256) {
                     
+                    //IF MISMATCH CHAR IS EMPTY
                     if (!charStack.empty()) {
                         
+                        //SET TOP OF THE STACK CHAR
                         parentNode.setMmc(charStack.peek());
 
                     }
                     else {
 
-                        //get the input number where input number matches phrase number
+                        //SET SAME MISMATCH CHAR AS ITS INPUTNUM
                         parentNode.setMmc(inputNode.getMmc());
                     }
                 }
 
-                //while there's something in the stack
+                //WHILE THERE IS SOMETHING IN THE STACK
                 while(!charStack.empty()) {
 
-                    //pop then print output
-                    //System.out.println("Hi");
+                    //POP THE PRINT OUTPUT
                     System.out.print(charStack.pop());
                 }
 
-                //output inputNode mmc
+                //THEN OUTPUT THE INPUT NODE'S MISMATCH CHAR LAST
                 System.out.print(inputNode.getMmc());
 
-                //save this phraseNum for putting mmc later
+                //SAVE PHRASENUM FOR PUTTING MISMATCH CHAR LATER
                 parentNode = currNode;
-
-                //add one to lib phraseNumber
                 phraseNum++;
 
-                //next line
+                //NEXT LINE
                 line = reader.readLine();
             }
         }

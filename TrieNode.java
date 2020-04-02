@@ -25,7 +25,6 @@ class TrieNode {
     }
 
     //GETTERS AND SETTERS
-
     public char getPhraseChar() {
         return _phraseChar;
     }

@@ -1,7 +1,12 @@
+/* Name: Meecah Cahayon + Eunice Llobet
+ * Student ID: 1259825 + 1330233
+ */
+
 import java.util.*;
 import java.io.*;
 
 class LibNode {
+
 	//DECLARE VARIABLES
 	private int _phraseNum;
 	private int _inputNum = 0;
