@@ -57,17 +57,18 @@ class LZWpack {
                 packer = doMasking(packer, bitTracker);
                 maxPhraseNum++;
 
-                //shift the packer by 8 to the left and outpit it
-                output = packer & maskOutput;
-                output = output >>> 24;
-                byte outputByte = (byte)output;
+                //while there's 8 or more bits
+                while (bitTracker > 7) {
 
-                //remove output from packer
-                packer = packer << 8;
-                bitTracker -= 8;
+                    //shift the packer by 8 to the left and outpit it
+                    output = packer & maskOutput;
+                    output = output >>> 24;
+                    byte outputByte = (byte)output;
+                    packer = packer << 8;
+                    bitTracker -= 8;
 
-                //output
-                System.out.write(outputByte);
+                    System.out.write(outputByte);
+                }
 
                 //NEXT LINE
                 line = reader.readLine();
@@ -81,6 +82,7 @@ class LZWpack {
 
                 // System.out.println("byte 1 " + output);
                 output = output >>> 24;
+
                 byte outputByte = (byte)output;
                 packer = packer << 8;
                 bitTracker -= 8;
@@ -99,8 +101,8 @@ class LZWpack {
         }
     }
 
-    static int doMasking(int packer, int bitCount)
-    {
+    static int doMasking(int packer, int bitCount) {
+
         int mask = (int)(Math.pow(2, bitCount) - 1) << (32 - bitCount);
         packer &= mask;
 
