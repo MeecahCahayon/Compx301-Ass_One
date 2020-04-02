@@ -122,25 +122,33 @@ class LZWunpack {
 
     static int doMasking(int bitCount, int unpacker) 
     {
+
         String strMask = "";
         int intMask;
         int count = 0;
 
-        for (int i = 0; i < bitCount; i++ ) {
-            
-            strMask += "1";
-            count++;
-        }
-    
-        while (count < 31) {
-            
-            strMask += "0";
-            count++;
-        }
+        if (bitCount < 31) {
 
-        intMask = Integer.parseInt(strMask,2);
-        intMask = intMask << 1;
-        unpacker = unpacker & intMask;
+            for (int i = 0; i < bitCount; i++ ) {
+                
+                strMask += "1";
+                count++;
+            }
+        
+            while (count < 31) {
+                
+                strMask += "0";
+                count++;
+            }
+
+            intMask = Integer.parseInt(strMask,2);
+            intMask = intMask << 1;
+            unpacker = unpacker & intMask;   
+        }
+        else {
+            
+            unpacker = unpacker & 0xFFFFFFFF; 
+        }
 
         return unpacker;
     }
