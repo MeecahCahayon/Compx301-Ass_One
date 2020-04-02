@@ -19,6 +19,11 @@ class LZWpack {
 
         try {
 
+            //DECLARE CONSTANTS
+            final int MASK_OUTPUT = 0xff000000;
+            final int RIGHT_SHIFT = 24;
+            final int BYTE = 8;
+
             //READ AS STREAM OF BYTES FROM FILE
             InputStream file = new FileInputStream(args[0]);
             BufferedReader reader = new BufferedReader(new InputStreamReader(file));
@@ -26,7 +31,6 @@ class LZWpack {
             //DECLARE VARIABLES
             int maxPhraseNum = 256;
             int maxBit = 32;
-            int maskOutput = 0xff000000;
             int packer = 0;
             int bitTracker = 0;
             int output = 0;
@@ -41,52 +45,57 @@ class LZWpack {
                 //CONVERTS LINE INTO INT
                 int inputNum = Integer.parseInt(line);
 
-                //Get new bitCount
+                //GET NEW BIT COUNT
                 bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
 
-                //shift phrase number by (maxBit - bitTracker - bitCount) to the left
+                //SHIFT PHRASE NUMBER TO THE LEFT
                 int newPhraseNum = inputNum << (maxBit - bitTracker - bitCount);
                 
-                //add new phrase number to packer
+                //ADD NEW PHRASE NUMBER TO PACKER
                 packer = packer | newPhraseNum;
 
-                //track how many bits in the packer
+                //TRACK HOW MANY BITS THERE ARE IN THE PACKER
                 bitTracker += bitCount;
 
-                //mask the packer according to bitTracker and bitCount
+                //MASKING
                 packer = doMasking(packer, bitTracker);
                 maxPhraseNum++;
 
-                //while there's 8 or more bits
+                //OUTPUT FOR EVERY BYTE
                 while (bitTracker > 7) {
 
-                    //shift the packer by 8 to the left and outpit it
-                    output = packer & maskOutput;
-                    output = output >>> 24;
+                    //MASKING
+                    output = packer & MASK_OUTPUT;
+                    
+                    //SHIFT TO THE RIGHT FOR OUTPUT
+                    output = output >>> RIGHT_SHIFT;
                     byte outputByte = (byte)output;
-                    packer = packer << 8;
-                    bitTracker -= 8;
 
+                    //SHIFT PACKER TO CLEAR SPACE
+                    packer = packer << BYTE;
+                    bitTracker -= BYTE;
+
+                    //OUTPUT
                     System.out.write(outputByte);
                 }
 
-                //NEXT LINE
+                //READ NEXT LINE
                 line = reader.readLine();
             }
 
-            //if there's still bits in the packer
+            //IF THERE'S STILL BITS IN THE PACKER
             while (bitTracker >= 0) {
                 
-                //shift the packer by 8 to the left and outpit it
-                output = packer & maskOutput;
-
-                // System.out.println("byte 1 " + output);
-                output = output >>> 24;
-
+                //MASKING
+                output = packer & MASK_OUTPUT;
+                output = output >>> RIGHT_SHIFT;
                 byte outputByte = (byte)output;
-                packer = packer << 8;
-                bitTracker -= 8;
 
+                //SHIFT PACKER TO THE LEFT BY 8 AND OUTPUT IT
+                packer = packer << BYTE;
+                bitTracker -= BYTE;
+
+                //OUTPUT
                 System.out.write(outputByte);
             }
 
