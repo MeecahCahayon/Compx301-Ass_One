@@ -14,7 +14,7 @@ class Library {
 	public Library() {
 
 		//CREATE THE ROOT
-		_root = new LibNode(1);
+		_root = new LibNode(-1);
 		LibNode parent = _root;
 		LibNode curr = _root;
 

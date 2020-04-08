@@ -21,7 +21,7 @@ class LZWdecode {
             Stack<Character> charStack = new Stack<Character>();
             int phraseNum = 256;
             int currIN;
-            char mmc = '\0';
+            char mmc;
 
             //READS LINE
             String line = reader.readLine();
@@ -39,7 +39,7 @@ class LZWdecode {
                 currIN = inputNode.getInputNum();
 
                 //IF PHRASE NUMBER HAS INPUTNUM
-                while (currIN != 0) {
+                while (currIN != -1) {
 
                     //GO TO THAT PHRASE NUMBER IN LIBRARY
                     currNode = myLibrary.findPhraseNumber(currIN);
@@ -79,11 +79,11 @@ class LZWdecode {
                 while(!charStack.empty()) {
 
                     //POP THE PRINT OUTPUT
-                    System.out.print(charStack.pop());
+                    System.out.write(charStack.pop());
                 }
 
                 //THEN OUTPUT THE INPUT NODE'S MISMATCH CHAR LAST
-                System.out.print(inputNode.getMmc());
+                System.out.write(inputNode.getMmc());
 
                 //SAVE PHRASENUM FOR PUTTING MISMATCH CHAR LATER
                 parentNode = currNode;
@@ -93,7 +93,8 @@ class LZWdecode {
                 line = reader.readLine();
             }
 
-            file.close();
+            System.out.flush();
+            reader.close();
         }
         catch (Exception eDecode) {
 

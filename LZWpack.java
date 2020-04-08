@@ -31,7 +31,7 @@ class LZWpack {
             //READS A LINE
             String line = reader.readLine();
 
-            //WHILE NOT END OF THE FILE
+            //IF NOT THE END OF STREAM
             while (line != null) {
                 
                 //CONVERTS LINE INTO INT
@@ -93,7 +93,6 @@ class LZWpack {
 
             System.out.flush();
             reader.close();
-            file.close();
         }
         catch (Exception ePacker) {
 

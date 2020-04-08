@@ -9,13 +9,14 @@ class LibNode {
 
 	//DECLARE VARIABLES
 	private int _phraseNum;
-	private int _inputNum = 0;
+	private int _inputNum;
 	private char _mmc;
 	private LibNode _next;
 
 	//CONSTRUCTOR
 	public LibNode(int phraseNum) {
 		_phraseNum = phraseNum;
+		_inputNum = -1;
 	}
 
 	//GETTERS AND SETTERS

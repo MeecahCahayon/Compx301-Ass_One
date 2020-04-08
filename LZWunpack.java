@@ -11,6 +11,9 @@ class LZWunpack {
 
         try {
 
+            //READ AS STREAM OF BYTES FROM FILE
+            BufferedInputStream input = new BufferedInputStream(System.in);
+
             //DECLARE CONSTANTS
             final int MAX_BIT = 32;
             final int INPUT_BIT = 8;
@@ -22,11 +25,13 @@ class LZWunpack {
             int output = 0;
             int bitCount = (int)(Math.ceil(Math.log(maxPhraseNum) / Math.log(2)));
 
-            //READ BYTE
-            int inputByte = System.in.read();
+            //READ FIRST BYTE
+            int inputByte = input.read();
 
             //IF NOT THE END OF STREAM
             while (inputByte != -1) {
+
+                inputByte = doMasking(inputByte, 0xFF000000);
 
                 //SHIFT PHRASE TO THE LEFT
                 int newByte = inputByte << (MAX_BIT - bitTracker - INPUT_BIT);
@@ -62,7 +67,7 @@ class LZWunpack {
                 }
 
                 //READ NEXT BYTE
-                inputByte = System.in.read();             
+                inputByte = input.read();
             }
         }
 
