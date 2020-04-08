@@ -10,9 +10,6 @@ class LZWencode {
     public static void main(String[] args) {
 
         try {
-            
-            //READ AS STREAM OF BYTES
-            InputStreamReader isr = new InputStreamReader(System.in);
 
             //DECLARE VARIABLES
             Trie myTrie = new Trie();
@@ -20,8 +17,8 @@ class LZWencode {
             //NUMBER OF EXPECTED SYMBOLS
             int phraseNum = 256;
             
-            //READ FIRST BYTE
-            int intInput = isr.read();
+            //READ BYTE
+            int intInput = System.in.read();
             int tempInput = intInput;
             parentNode = myTrie.getTrieRoot();
 
@@ -37,7 +34,7 @@ class LZWencode {
                     parentNode = currNode;
 
                     //READ NEXT BYTE AND SET NEXT NODE
-                    intInput = isr.read();
+                    intInput = System.in.read();
                     tempInput = intInput;
                     currNode = myTrie.FindChar(currNode, intInput);
                 }
@@ -50,8 +47,8 @@ class LZWencode {
                 System.out.println(parentNode.getPhraseNum());
 
                 intInput = tempInput;
-
             }
+
         }
         catch(Exception eEncode) {
 

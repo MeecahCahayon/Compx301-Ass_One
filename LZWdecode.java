@@ -92,6 +92,8 @@ class LZWdecode {
                 //NEXT LINE
                 line = reader.readLine();
             }
+
+            file.close();
         }
         catch (Exception eDecode) {
 

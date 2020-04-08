@@ -93,6 +93,7 @@ class LZWpack {
 
             System.out.flush();
             reader.close();
+            file.close();
         }
         catch (Exception ePacker) {
 
