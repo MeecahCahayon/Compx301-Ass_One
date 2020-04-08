@@ -8,20 +8,12 @@ import java.io.*;
 class LZWdecode {
 
     public static void main(String[] args) {
-        
-        //PASS IN A TEXT FILE FOR INPUT
-        if (args.length != 1) {
-            
-            //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWdecode <LZWencode output file>");
-            return;
-        }
 
         try {
 
-            //READ AS STREAM OF BYTES FROM FILE
-            InputStream file = new FileInputStream(args[0]);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+            //READ AS STREAM OF BYTES
+            InputStreamReader file = new InputStreamReader(System.in);
+            BufferedReader reader = new BufferedReader(file);
 
             //DECLARE VARIABLES
             Library myLibrary = new Library();

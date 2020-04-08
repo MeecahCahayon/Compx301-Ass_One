@@ -8,19 +8,11 @@ import java.io.*;
 class LZWencode {
 
     public static void main(String[] args) {
-        
-        //PASS IN A TEXT FILE FOR INPUT
-        if (args.length != 1) {
-            
-            //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWencode <Input text File>");
-            return;
-        }
 
         try {
             
-            //READ AS STREAM OF BYTES FROM FILE
-            InputStream fis = new FileInputStream(args[0]);
+            //READ AS STREAM OF BYTES
+            InputStreamReader isr = new InputStreamReader(System.in);
 
             //DECLARE VARIABLES
             Trie myTrie = new Trie();
@@ -29,7 +21,7 @@ class LZWencode {
             int phraseNum = 256;
             
             //READ FIRST BYTE
-            int intInput = fis.read();
+            int intInput = isr.read();
             int tempInput = intInput;
             parentNode = myTrie.getTrieRoot();
 
@@ -45,7 +37,7 @@ class LZWencode {
                     parentNode = currNode;
 
                     //READ NEXT BYTE AND SET NEXT NODE
-                    intInput = fis.read();
+                    intInput = isr.read();
                     tempInput = intInput;
                     currNode = myTrie.FindChar(currNode, intInput);
                 }

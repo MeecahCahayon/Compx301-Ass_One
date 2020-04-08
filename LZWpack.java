@@ -8,14 +8,6 @@ import java.io.*;
 class LZWpack {
 	
 	public static void main(String[] args) {
-        
-        //PASS IN A TEXT FILE FOR INPUT
-        if (args.length != 1) {
-            
-            //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWpack <LZWpack output file>");
-            return;
-        }
 
         try {
 
@@ -24,9 +16,9 @@ class LZWpack {
             final int RIGHT_SHIFT = 24;
             final int BYTE = 8;
 
-            //READ AS STREAM OF BYTES FROM FILE
-            InputStream file = new FileInputStream(args[0]);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
+            //READ AS STREAM OF BYTES
+            InputStreamReader file = new InputStreamReader(System.in);
+            BufferedReader reader = new BufferedReader(file);
 
             //DECLARE VARIABLES
             int maxPhraseNum = 256;

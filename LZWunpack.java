@@ -8,19 +8,11 @@ import java.io.*;
 class LZWunpack {
     
     public static void main(String[] args) {
-        
-        //PASS IN A TEXT FILE FOR INPUT
-        if (args.length != 1) {
-            
-            //PRINT ERROR MESSAGE
-            System.err.println("Enter valid argument: java LZWunpack <LZWunpack output file>");
-            return;
-        }
 
         try {
 
-            //READ AS STREAM OF BYTES FROM FILE
-            InputStream file = new FileInputStream(args[0]);
+            //READ AS STREAM OF BYTE
+            InputStreamReader file = new InputStreamReader(System.in);
 
             //DECLARE CONSTANTS
             final int MAX_BIT = 32;
